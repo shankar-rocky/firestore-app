@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="signup-div" class="main1-div">
+        <h3>Firebase Web Login</h3>
+        <input type="email" placeholder="Email..." id="email">
+        <input type="password" placeholder="Password..." id="password">
+        <button onclick="signup()">Signup To Account</button>
+    </div>
+
+    <div id="login-div" class="main-div">
+        <h3>Firebase Web Login</h3>
+        <input type="email" placeholder="Email..." id="email">
+        <input type="password" placeholder="Password..." id="password">
+        <button onclick="login()">login To Account</button>
+    </div>
+     
+    <div id="logout-div" class="Loggedin-div">
+        <h3>Welcome user</h3>
+        <p>Welcome to Firebase web Login Example.You're currently Logged in</p>
+        <button onclick="logout()">Logout</button>
+    </div>
+</body>
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-analytics.js"></script>
+<script>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyAi9JLadSXnqp5smjXN_FuH0Xg2bC8NRkc",
+    authDomain: "tokyo-kingdom-291505.firebaseapp.com",
+    projectId: "tokyo-kingdom-291505",
+    storageBucket: "tokyo-kingdom-291505.appspot.com",
+    messagingSenderId: "993302694501",
+    appId: "1:993302694501:web:0b14cca9dae7f371bb148c",
+    measurementId: "G-NGF3K86JHW"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+
+
+  firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    // User is signed in.
+
+    document.getElementById("logout-div").style.display="block";
+    document.getElementById("login-div").style.display="none";
+    document.getElementById("signup-div").style.display="none";
+  } else {
+    // No user is signed in.
+    document.getElementById("logout-div").style.display="none";
+    document.getElementById("login-div").style.display="block";
+    document.getElementById("signup-div").style.display="block";
+    
+  }
+});
+
+
+
+function login(){
+    userEmail=document.getElementById("email").value;
+    userPass=document.getElementById("password").value;
+
+   firebase.auth().signInWithEmailAndPassword(userEmail,userPass)
+  .then(function(user){
+    console.log(user);
+    alert("User Logged In Successfully");
+  })
+  .catch(function(error){
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    // ..
+    alert("Error "+errorMessage);
+  });
+
+}
+
+function signup(){
+    userEmail=document.getElementById("email").value;
+    userPass=document.getElementById("password").value;
+
+   firebase.auth().createUserWithEmailAndPassword(userEmail,userPass)
+  .then(function(user){
+    console.log(user);
+    alert("User Signed In Successfully");
+  })
+  .catch(function(error){
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    // ..
+    alert("Error "+errorMessage);
+  });
+
+}
+function logout(){
+
+firebase.auth().signOut().then(function(){
+  // Sign-out successful.
+  alert("Sign Out Successful");
+}).catch(function(error){
+  // An error happened.
+   var errorCode = error.code;
+    var errorMessage = error.message;
+    // ..
+    alert("Error "+errorMessage);
+});
+}
+</script>
